@@ -51,7 +51,7 @@ int main() {
     SOCKADDR_IN addr;
     int size = sizeof(addr);
     //переменная предназначеная для хранения адреса, для инет протоколов используется sockaddr_in
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
     //это работае так что адрес это поле в виде класса в классе SOCKADDR_IN, поэтому чтобы установить конкретное поле класса адреса,нужно обратиться к полю
     addr.sin_family = AF_INET;
     addr.sin_port = htons(1234);
@@ -71,10 +71,6 @@ int main() {
     else {
         cout << "Connection established." << endl;
     }
-
-    string message = "idi nahui";
-    send(newConnection, message.c_str(), message.size(), 0);
-
     char strX[256];
     char strY[256];
     recv(newConnection,strX,sizeof(strX),0);
@@ -83,5 +79,5 @@ int main() {
     double x = strtod(strX, NULL);
     double y = strtod(strY, NULL);
     string result = chooseQuarter(x,y);
-    send(newConnection, result.c_str(), sizeof(result), 0);
+    send(newConnection, result.c_str(), result.size()+ 1, 0);
 }

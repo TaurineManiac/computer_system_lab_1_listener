@@ -45,6 +45,7 @@ int main() {
     if (WSAStartup(wVersion, &wSAData)!=0) {
         cout << "WSAStartup failed with error: " << WSAGetLastError() << endl;
         //если библиотека загрузилась удачно, то она вернёт значение 0
+        WSACleanup();
         return 1;
     }
 
@@ -80,4 +81,8 @@ int main() {
     double y = strtod(strY, NULL);
     string result = chooseQuarter(x,y);
     send(newConnection, result.c_str(), result.size()+ 1, 0);
+
+    closesocket(newConnection);
+    closesocket(sock);
+    WSACleanup();
 }
